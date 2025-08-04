@@ -3,6 +3,8 @@ package com.springboot.blog.exception;
 import com.springboot.blog.payload.ErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -11,6 +13,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,6 +38,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleBlogAPIException(Exception exception, WebRequest webRequest) {
         ErrorDetails errorDetails = this.buildErrorDetails(exception, webRequest);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException exception, WebRequest request) {
+
+        Map<String, String> errors = new HashMap<>();
+        // Add the failed field and message to the map
+        exception.getBindingResult().getFieldErrors().forEach((error) -> {
+            String fieldName = error.getField();
+            String message = error.getDefaultMessage();
+            errors.put(fieldName, message);
+        });
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
     // Build ErrorDetails with local timestamp, message, and URI info
