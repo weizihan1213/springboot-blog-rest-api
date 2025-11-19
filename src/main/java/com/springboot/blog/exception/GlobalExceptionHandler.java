@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
+import org.springframework.security.access.AccessDeniedException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -62,5 +63,12 @@ public class GlobalExceptionHandler {
         String formattedTime = localTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"));
 
         return new ErrorDetails(formattedTime, exception.getMessage(), webRequest.getDescription(false));
+    }
+
+    // Exception Handler for "AccessDeniedException"
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorDetails> handleAccessDeniedException(AccessDeniedException exception, WebRequest webRequest) {
+        ErrorDetails errorDetails = this.buildErrorDetails(exception, webRequest);
+        return new ResponseEntity<>(errorDetails, HttpStatus.UNAUTHORIZED);
     }
 }
