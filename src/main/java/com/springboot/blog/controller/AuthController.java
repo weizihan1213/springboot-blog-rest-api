@@ -1,9 +1,12 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.payload.LoginDTO;
+import com.springboot.blog.payload.RegisterDTO;
 import com.springboot.blog.service.AuthService;
 import com.springboot.blog.service.impl.AuthServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +30,12 @@ public class AuthController {
         String response = this.authService.login(loginDTO);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = {"/register", "/signup"})
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterDTO registerDTO) {
+        String response = this.authService.register(registerDTO);
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
