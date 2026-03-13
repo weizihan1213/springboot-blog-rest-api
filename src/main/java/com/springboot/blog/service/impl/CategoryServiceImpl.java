@@ -9,6 +9,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -38,5 +40,12 @@ public class CategoryServiceImpl implements CategoryService {
                 orElseThrow(() -> new ResourceNotFoundException("Category", "id", id));
 
         return this.modelMapper.map(category, CategoryDTO.class);
+    }
+
+    @Override
+    public List<CategoryDTO> getAllCategories() {
+        List<Category> categoryList = this.categoryRepository.findAll();
+
+        return categoryList.stream().map((category -> modelMapper.map(category, CategoryDTO.class))).toList();
     }
 }
