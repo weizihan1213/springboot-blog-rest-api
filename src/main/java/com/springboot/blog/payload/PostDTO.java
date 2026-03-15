@@ -27,4 +27,6 @@ public class PostDTO {
     @Size(min = 1, message = "Post content should have at least 1 character.")
     private String content;
     private Set<CommentDTO> comments;
+
+    private Long categoryId;
 }
