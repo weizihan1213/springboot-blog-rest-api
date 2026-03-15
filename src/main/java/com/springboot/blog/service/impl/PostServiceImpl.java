@@ -89,17 +89,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPostById(Long id) {
-        Post post = this.postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", id));
+        Post post = this.postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "Id", id));
 
         return this.mapToDTO(post);
     }
 
     @Override
     public PostDTO updatePost(PostDTO postDTO, Long id) {
-        Post post = this.postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post", "Id", id));
+        Post post = this.postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "Id", id));
+
+        Category category = this.categoryRepository.findById(postDTO.getCategoryId())
+                        .orElseThrow(() -> new ResourceNotFoundException("Category", "Id", postDTO.getCategoryId()));
+
         post.setTitle(postDTO.getTitle());
         post.setDescription(postDTO.getDescription());
         post.setContent(postDTO.getContent());
+        post.setCategory(category);
 
         Post updatedPost = this.postRepository.save(post);
         return this.mapToDTO(updatedPost);
