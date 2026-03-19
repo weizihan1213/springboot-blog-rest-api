@@ -2,6 +2,7 @@ package com.springboot.blog.controller;
 
 import com.springboot.blog.payload.CategoryDTO;
 import com.springboot.blog.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/categories")
+@Tag(
+        name = "Categories"
+)
 public class CategoryController {
 
     private CategoryService categoryService;
