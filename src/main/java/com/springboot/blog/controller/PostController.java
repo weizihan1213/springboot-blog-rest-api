@@ -1,7 +1,6 @@
 package com.springboot.blog.controller;
 
 import com.springboot.blog.payload.PostDTO;
-import com.springboot.blog.payload.PostDTOV2;
 import com.springboot.blog.payload.PostResponse;
 import com.springboot.blog.service.PostService;
 import com.springboot.blog.utils.AppConstants;
@@ -19,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -100,20 +98,6 @@ public class PostController {
     public ResponseEntity<PostDTO> getPostByIdV1(@PathVariable(name = "id") Long id) {
 
         return ResponseEntity.ok(this.postService.getPostById(id));
-    }
-
-    @GetMapping("/api/v2/posts/{id}")
-    public ResponseEntity<PostDTOV2> getPostByIdV2(@PathVariable(name = "id") Long id) {
-        PostDTO postDTO = this.postService.getPostById(id);
-        PostDTOV2 postDtov2 = new PostDTOV2();
-        postDtov2.setId(postDTO.getId());
-        postDtov2.setTitle(postDTO.getTitle());
-        postDtov2.setDescription(postDTO.getDescription());
-        postDtov2.setContent(postDTO.getContent());
-        List<String> tags = new ArrayList<>();
-        tags.add("Spring Boot");
-        tags.add("Spring Learning");
-        return ResponseEntity.ok(postDtov2);
     }
 
     @Operation(
