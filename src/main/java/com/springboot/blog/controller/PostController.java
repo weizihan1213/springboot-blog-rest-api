@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api/v1")
 @Tag(
         name = "Posts"
 )
@@ -50,7 +50,7 @@ public class PostController {
             name = "Bearer Authentication"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/api/v1/posts")
+    @PostMapping("/posts")
     // create blog post
     public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDto) {
 
@@ -72,7 +72,7 @@ public class PostController {
                     schema = @Schema(implementation = PostResponse.class)
             )
     )
-    @GetMapping("/api/v1/posts")
+    @GetMapping("/posts")
     public PostResponse getAllPosts(
             @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
@@ -94,7 +94,7 @@ public class PostController {
                     schema = @Schema(implementation = PostDTO.class)
             )
     )
-    @GetMapping("/api/v1/posts/{id}")
+    @GetMapping("/posts/{id}")
     public ResponseEntity<PostDTO> getPostByIdV1(@PathVariable(name = "id") Long id) {
 
         return ResponseEntity.ok(this.postService.getPostById(id));
@@ -116,7 +116,7 @@ public class PostController {
             name = "Bearer Authentication"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/api/v1/posts/{id}")
+    @PutMapping("/posts/{id}")
     public ResponseEntity<PostDTO> updatePost(@Valid @RequestBody PostDTO postDTO, @PathVariable(name = "id") Long id) {
         PostDTO postResponse = this.postService.updatePost(postDTO, id);
 
@@ -139,7 +139,7 @@ public class PostController {
             name = "Bearer Authentication"
     )
     @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/api/v1/posts/{id}")
+    @DeleteMapping("/posts/{id}")
     public ResponseEntity<String> deletePost(@PathVariable(name = "id") Long id) {
         this.postService.deletePostById(id);
 
@@ -158,7 +158,7 @@ public class PostController {
                     array = @ArraySchema(schema = @Schema(implementation = PostDTO.class))
             )
     )
-    @GetMapping("/api/v1/posts/category/{id}")
+    @GetMapping("/posts/category/{id}")
     public ResponseEntity<List<PostDTO>> getPostsByCategory(@PathVariable(name = "id") Long categoryId) {
         List<PostDTO> postDtos = this.postService.getPostsByCategory(categoryId);
         return new ResponseEntity<>(postDtos, HttpStatus.OK);
