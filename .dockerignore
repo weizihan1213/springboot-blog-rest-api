@@ -1,0 +1,13 @@
+target/
+.git
+.idea/
+.vscode/
+.DS_Store
+*.log
+
+# Terraform cache
+terraform/.terraform/
+
+# Terraform state
+terraform/*.tfstate
+terraform/*.tfstate.*
