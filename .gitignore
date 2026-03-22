@@ -33,6 +33,7 @@ build/
 .vscode/
 
 ### Terraform ###
+.terraform/
 terraform/terraform.tfvars
 *.tfstate
 *.tfstate.*
